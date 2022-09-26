@@ -40,3 +40,50 @@ exports.register = (req,res) => {
         return res.status(500).json({"error":"Something went wrong, registration aborted."})
     }
 }
+exports.login = (req,res) => {
+    try {
+        if (req.body.email && req.body.password) {
+            const email = req.body.email
+            User.findOne({ email }).then(async (response) => {
+                if (response) {
+                    const isPasswordCorrect = await bcrypt.compare(req.body.password, response.password)
+                    if (isPasswordCorrect) {
+                        let session = ''
+                        const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                        const charactersLength = characters.length;
+                        const sessionLength = 30 
+                        for (let index = 0; index < sessionLength; index++) {
+                            session = session+characters.charAt(Math.floor(Math.random() * 
+                            charactersLength))
+                        }
+                        res.cookie('LOCAL_KEY', session)
+                        User.updateOne({ email }, { session } )
+                        .then(() => { 
+                            return res.status(200).json({"error":"Success! Logging in."})
+                         })
+                        .catch((error) => {
+                            console.log(error)
+                            return res.status(500).json({"error":"Unsuccessful login though to server issue. Please try again later."})
+                        })
+                    }
+                    else{
+                        return res.status(406).json({ "error": "Incorrect password!" });
+                    }
+                }
+                else{
+                    return res.status(406).json({"error":"Incorrect Email address."})
+                }
+            })           
+            .catch((err) => {
+                console.log(err)
+                return res.status(406).json({"error":"Database error, please try again later."})
+            })
+        }
+        else {
+            return res.status(406).json({"error":"Bad input"})
+        }
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({"error":"Something went wrong, login aborted."})
+    }
+}

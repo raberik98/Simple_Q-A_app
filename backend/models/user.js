@@ -16,7 +16,10 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    session: String
+    session: {
+        type: String,
+        default: "11"
+    }
 }, { versionKey: false });
 
 module.exports = mongoose.model('User', userSchema, 'users');
