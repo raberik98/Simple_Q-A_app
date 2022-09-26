@@ -9,12 +9,14 @@ require("dotenv").config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
-app.use(cors({ origin: 'http://localhost:' + process.env.FRONTEND_PORT, credentials: true }));
+// app.use(cors({ origin: 'http://localhost:' + process.env.FRONTEND_PORT, credentials: true }));
 app.use(cookieParser());
 
 
-const Router = require('./routes/Index.js');
-app.use(Router);
+const userRoute = require('./routes/User.js');
+const questionRoute = require('./routes/Question.js');
+app.use(userRoute);
+app.use(questionRoute);
 
 
 const CONNECTION_STRING = process.env.CONNECTION_STRING;
