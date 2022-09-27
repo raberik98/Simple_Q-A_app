@@ -87,3 +87,17 @@ exports.login = (req,res) => {
         return res.status(500).json({"error":"Something went wrong, login aborted."})
     }
 }
+exports.isLoggedIn = (req,res) => {
+    const session = req.cookies['LOCAL_KEY']
+    if (!session) {
+        return res.status(401).json({"error":"No logged in user."})
+    }
+    else
+    {
+        User.findOne({ session }).then((resp)=>{
+            return res.status(200).json(resp._id)
+        }).catch(()=>{
+            return res.status(401).json({"error":"Invalid user."})
+        })
+    }
+}
