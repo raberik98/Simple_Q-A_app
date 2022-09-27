@@ -25,4 +25,70 @@ export default {
             return Promise.reject(err)
         })
     },
+    IsLoggedIn() {
+        return Axios.get('/isloggedin')
+        .then((resp) => {
+            console.log(resp)
+            return resp
+        })
+        .catch(err => {
+            console.log(err)
+            return Promise.reject(err)
+        })
+    },
+    GetAllGuestions() {
+        return Axios.get('/getallquestions')
+        .then((resp) => {
+            console.log(resp)
+            return resp
+        })
+        .catch(err => {
+            console.log(err)
+            return Promise.reject(err)
+        })
+    },
+    GetQuestionById(id) {
+        return Axios.get('/getquestionsbyid/'+id)
+        .then((resp) => {
+            console.log(resp)
+            return resp
+        })
+        .catch(err => {
+            console.log(err)
+            return Promise.reject(err)
+        })
+    },
+    PostNewQuestion(data) {
+        return Axios.post('/postnewquestion',data)
+        .then((resp) => {
+            console.log(resp)
+            return resp
+        })
+        .catch(err => {
+            console.log(err)
+            return Promise.reject(err)
+        })
+    },
+    EditQuestion(id, data) {
+        return Axios.post('/editquestion/'+id, data)
+        .then((resp) => {
+            console.log(resp)
+            return resp
+        })
+        .catch(err => {
+            console.log(err)
+            return Promise.reject(err)
+        })
+    },
+    DeleteQuestion(id) {
+        return Axios.delete('/deletequestion/'+id)
+        .then((resp) => {
+            console.log(resp)
+            return resp
+        })
+        .catch(err => {
+            console.log(err)
+            return Promise.reject(err)
+        })
+    },
 }
