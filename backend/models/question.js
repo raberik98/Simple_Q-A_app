@@ -16,9 +16,11 @@ const questionSchema = new Schema({
     },
     voteUps: {
         type: Number,
+        default: 0
     },
     voteDowns: {
         type: Number,
+        default: 0
     },
     answers: [
         {

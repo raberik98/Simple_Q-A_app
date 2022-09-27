@@ -97,7 +97,7 @@ exports.isLoggedIn = (req,res) => {
         User.findOne({ session }).then((resp)=>{
             return res.status(200).json(resp._id)
         }).catch(()=>{
-            return res.status(401).json({"error":"Invalid user."})
+            return res.status(401).json(false)
         })
     }
 }

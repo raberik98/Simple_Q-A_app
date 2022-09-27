@@ -11,3 +11,35 @@ exports.getAllQuestions = () => {
     })
 }
 
+exports.postNewQuestion = () => {
+    userId = userController.isLoggedIn()
+
+    if (!userId) {
+        const title = req.body.title
+        const message = req.body.message
+        if (message && title) {
+            let question = new Question
+            question.userId = userId
+            question.title = title
+            question.message = message
+            question.answers = []
+            question.save().then(() => {
+                return res.status(200).json({"error":"Success! Your question have been successfuly posted."})
+            }
+            ).catch((err) => {
+                console.log(err)
+                return res.status(500).json({"error":"Database error, please try it again later."})
+            })
+        }
+        else{
+            return res.status(400).json({ "error": "Bad input!" });
+        }
+    }
+    else{
+        return res.status(401).json({"error":"You are unauthorized to post a new question, please log in!"})
+    }
+}
+
+exports.editQuestion = () => {
+    
+}
