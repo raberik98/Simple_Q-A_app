@@ -27,7 +27,7 @@
 import DataService from '../services/DataService.js'
 import navbar from '../components/navbar'
 export default {
-  name:'questions',
+  name:'questionEditor',
   components: {
         navbar
     },
