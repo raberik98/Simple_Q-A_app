@@ -101,3 +101,7 @@ exports.isLoggedIn = (req,res) => {
         })
     }
 }
+exports.logOut = (req,res) => {
+    res.clearCookie('LOCAL_KEY');
+    return res.status(200).json({ "message": "Successful logout." });
+}

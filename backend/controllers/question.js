@@ -2,7 +2,7 @@ const Question = require('../models/question.js');
 const userController = require('../controllers/user')
 
 
-exports.getAllQuestions = () => {
+exports.getAllQuestions = (req,res) => {
     Question.find().then((questions) => {
         return res.status(200).json(questions)
     }).catch((err) => {
@@ -11,7 +11,7 @@ exports.getAllQuestions = () => {
     })
 }
 
-exports.getQuestionById = () => {
+exports.getQuestionById = (req,res) => {
     const _id = req.params.questionId
     Question.findOne({_id}).then((question) => {
         return res.status(200).json(questions)
@@ -22,10 +22,10 @@ exports.getQuestionById = () => {
     })
 }
 
-exports.postNewQuestion = () => {
-    userId = userController.isLoggedIn()
+exports.postNewQuestion = (req,res) => {
+    userId = req.body.userId
 
-    if (!userId) {
+    if (userId) {
         const title = req.body.title
         const message = req.body.message
         if (message && title) {
@@ -51,8 +51,8 @@ exports.postNewQuestion = () => {
     }
 }
 
-exports.editQuestion = () => {
-    userId = userController.isLoggedIn()
+exports.editQuestion = (req,res) => {
+    userId = req.body.userId
 
     if (!userId) {
         const _id = req.params.questionId
@@ -91,7 +91,7 @@ exports.editQuestion = () => {
     }
 }
 
-exports.deleteQuestion = () => {
+exports.deleteQuestion = (req,res) => {
     userId = userController.isLoggedIn()
 
     if (!userId) {

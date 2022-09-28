@@ -1,35 +1,44 @@
 <template>
- <main class="container">
-    <h1>Stackoverlow</h1>
+ <main class="row">
+    <navbar/>
+    <div class="col-2"></div>
+    <div class="col-8">
+        
+        <h1>Stackoverlow</h1>
     
-    <div class="d-flex authenticationButtons">
-        <button class="btn btn-primary m-2" @click="IWantToRegister()">Register</button>
-        <button class="btn btn-primary m-2" @click="IWantToLogin()">Login</button>
-    </div>
-     <div v-if="this.toastVisible" class="toastBlock">
-        <h4>{{this.toastText}}</h4>
-    </div>
-    <form @submit.prevent="FormSubmit()" v-if="this.formVisible" class="autenticationForm">
-        <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" v-model="this.email">
-            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+        <div class="d-flex authenticationButtons">
+            <button class="btn btn-primary m-2" @click="IWantToRegister()">Register</button>
+            <button class="btn btn-primary m-2" @click="IWantToLogin()">Login</button>
         </div>
-        <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1" v-model="this.password">
+        <div v-if="this.toastVisible" class="toastBlock">
+            <h4>{{this.toastText}}</h4>
         </div>
-        <button type="submit" class="btn btn-primary m-2">{{this.buttonText}}</button>
-        <button class="btn btn-danger" @click="closeForm(event)">Close</button>
-    </form>
-   
+        <form @submit.prevent="FormSubmit()" v-if="this.formVisible" class="autenticationForm">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" v-model="this.email">
+                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" v-model="this.password">
+            </div>
+            <button type="submit" class="btn btn-primary m-2">{{this.buttonText}}</button>
+            <button class="btn btn-danger" @click="closeForm(event)">Close</button>
+        </form>
+    </div>
+    <div class="col-2"></div>
  </main>
 </template>
 
 <script>
 import DataService from '../services/DataService.js'
+import navbar from '../components/navbar'
 export default {
-    name:"navbar",
+    name:"Home",
+    components: {
+        navbar
+    },
     data(){
         return{
             doIWantToRegister: false,
@@ -95,6 +104,8 @@ export default {
         margin-left: 50px;
     }
     .autenticationForm{
+        z-index: 1000;
+        background-color: white;
         position: absolute;
         width: 250px;
         height: 400px;

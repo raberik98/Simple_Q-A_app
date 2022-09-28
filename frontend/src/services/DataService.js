@@ -25,6 +25,17 @@ export default {
             return Promise.reject(err)
         })
     },
+    Logout() {
+        return Axios.get('/logout')
+        .then((resp) => {
+            console.log(resp)
+            return resp
+        })
+        .catch(err => {
+            console.log(err)
+            return Promise.reject(err)
+        })
+    },
     IsLoggedIn() {
         return Axios.get('/isloggedin')
         .then((resp) => {
