@@ -13,7 +13,7 @@ exports.getAllQuestions = (req,res) => {
 
 exports.getQuestionById = (req,res) => {
     const _id = req.params.questionId
-    Question.findOne({_id}).then((question) => {
+    Question.findOne({_id}).then((questions) => {
         return res.status(200).json(questions)
     })
     .catch((err) => {
@@ -54,7 +54,7 @@ exports.postNewQuestion = (req,res) => {
 exports.editQuestion = (req,res) => {
     userId = req.body.userId
 
-    if (!userId) {
+    if (userId) {
         const _id = req.params.questionId
         if (_id) {
             const newtitle = req.body.title
@@ -62,7 +62,7 @@ exports.editQuestion = (req,res) => {
             if (newmessage && newtitle) {
                 Question.findOne({_id}).then((resp) => {
                     if (resp.userId == userId) {
-                        Question.updateOne({_id}, {title: newtitle}, {message: newmessage}).then(() => {
+                        Question.updateOne({_id}, {title: newtitle, message: newmessage}).then(() => {
                             return res.status(200).json({"error":"Success! Your question have been edited."})
                         })
                         .catch((err) => {
@@ -92,9 +92,9 @@ exports.editQuestion = (req,res) => {
 }
 
 exports.deleteQuestion = (req,res) => {
-    userId = userController.isLoggedIn()
+    userId = req.body.userId
 
-    if (!userId) {
+    if (userId) {
         const _id = req.params.questionId
         if (_id) {
             Question.findOne({_id}).then((resp) => {

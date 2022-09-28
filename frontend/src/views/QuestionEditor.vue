@@ -10,7 +10,7 @@
             </div>
             <div class="mb-3">
             <label for="exampleFormControlTextarea1" class="form-label">Can you explain the problem?</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="9" v-model="this.message"></textarea>
+            <textarea class="form-control" rows="9" v-model="this.message"></textarea>
             </div>
             <button class="btn btn-primary" @click="submit()">Submit</button>
             <button class="btn btn-danger" v-if="!this.amIPostingANewQuestion" @click="this.delete()">Delete</button>
@@ -54,10 +54,25 @@ export default {
                     this.toastText = err.response.data.error
                     this.toastVisible = true
                 })
+            }else {
+                DataService.EditQuestion(this.id, {"title": this.title, "message": this.message, "userId": this.userId, "questionId": this.id})
+                .then((resp) => {
+                    this.toastText = resp.data.error
+                    this.toastVisible = true
+                }).catch((err) => {
+                    this.toastText = err.response.data.error
+                    this.toastVisible = true
+                })
             }
         },
         delete(){
-            
+            DataService.DeleteQuestion(this.id, {"userId": this.userId})
+                .then(() => {
+                    this.$router.push('/questions')
+                }).catch((err) => {
+                    this.toastText = err.response.data.error
+                    this.toastVisible = true
+                })
         }
     },
     mounted(){
@@ -68,8 +83,8 @@ export default {
                 this.amIPostingANewQuestion = false
                 this.HeaderText = "How would you like to edit your question?"
                 DataService.GetQuestionById(this.id).then((resp) => {
-                    this.title = resp.title
-                    this.message = resp.message
+                    this.title = resp.data.title
+                    this.message = resp.data.message
                 })
             }
         }).catch((err) => {
@@ -86,7 +101,7 @@ export default {
         position: relative;
         left: 0;
         height: 30px;
-        width: 600px;
+        width: 700px;
         background-color: rgb(180, 89, 89);
         color: white;
         border-radius: 10px;

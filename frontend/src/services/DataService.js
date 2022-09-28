@@ -91,8 +91,8 @@ export default {
             return Promise.reject(err)
         })
     },
-    DeleteQuestion(id) {
-        return Axios.delete('/deletequestion/'+id)
+    DeleteQuestion(id, data) {
+        return Axios.post('/deletequestion/'+id, data)
         .then((resp) => {
             console.log(resp)
             return resp
