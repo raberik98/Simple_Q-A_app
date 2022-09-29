@@ -219,3 +219,178 @@ exports.voteForQuestion = (req,res) => {
         return res.status(401).json({"error":"You are unauthorized to vote for this question, please log in!"})
     }
 }
+exports.postNewAnswer = (req,res) => {
+    const userId = req.body.userId
+    if (userId) {
+        const _id = req.params.questionId
+        Question.findOne({_id}).then((resp) => {
+            let answers = resp.answers
+            let newAnswer = {}
+            let answerText = req.body.answer
+            newAnswer.answeringUserId = userId
+            newAnswer.answerText = answerText
+            answers.push(newAnswer)
+
+            Question.updateOne({_id}, {answers: answers}).then(() => {
+                return res.status(200).json({"error":"Your answer have been registered."})
+            })
+            .catch((err) => {
+                console.log(err)
+                return res.status(500).json({"error":"Database error, please try it again later."})
+            })
+            
+        })
+        .catch(() => {
+            return res.status(404).json({"error":"Question doesn't exist."})
+        })
+    }
+    else{
+        return res.status(401).json({"error":"You are unauthorized to delete this question, please log in!"})
+    }
+}
+
+exports.editAnswer = (req,res) => {
+    const userId = req.body.userId
+    if (userId) {
+        const _id = req.params.questionId
+        Question.findOne({_id}).then((resp) => {
+           
+            let answers = resp.answers
+            const answerId = req.body.answerId
+            const newAnswer = req.body.newAnswer
+            
+
+           for (let index = 0; index < answers.length; index++) {
+                if (answers[index]._id == answerId) {
+                    if (answers[index].answeringUserId == userId) {
+                        answers[index].answerText = newAnswer
+                        Question.updateOne({_id}, {answers: answers}).then(() => {
+                            return res.status(200).json({"error":"Your answer have been edited."})
+                        })
+                        .catch((err) => {
+                            console.log(err)
+                            return res.status(500).json({"error":"Database error, please try it again later."})
+                        })
+                    }
+                    else {
+                        return res.status(401).json({"error":"Only the one who posted the answer can edit it."})
+                    }
+                }
+                else{} 
+            }
+            // return res.status(404).json({"error":"Couldn't find the answer."})
+        })
+        .catch(() => {
+            return res.status(404).json({"error":"Question doesn't exist."})
+        })
+    }
+    else{
+        return res.status(401).json({"error":"You are unauthorized to delete this question, please log in!"})
+    }
+}
+exports.deleteAnswer = (req,res) => {
+    const userId = req.body.userId
+    if (userId) {
+        const _id = req.params.questionId
+        Question.findOne({_id}).then((resp) => {
+           
+            let answers = resp.answers
+            let newAsnwers = []
+            const answerId = req.body.answerId
+
+           for (let index = 0; index < answers.length; index++) {
+                if (answers[index]._id == answerId) {
+                    if (answers[index].answeringUserId != userId) {
+                        return res.status(401).json({"error":"You cannot delete this answer."})
+                    }
+                }
+                else {
+                    newAsnwers.push(answers[index])
+                }
+            }
+            Question.updateOne({_id}, {answers: newAsnwers}).then(() => {
+                return res.status(200).json({"error":"Your answer have been deleted."})
+            })
+            .catch((err) => {
+                console.log(err)
+                return res.status(500).json({"error":"Database error, please try it again later."})
+            })
+        })
+        .catch(() => {
+            return res.status(404).json({"error":"Question doesn't exist."})
+        })
+    }
+    else{
+        return res.status(401).json({"error":"You are unauthorized to delete this question, please log in!"})
+    }
+}
+exports.acceptAnswer = (req,res) => {
+    const userId = req.body.userId
+    if (userId) {
+        const _id = req.params.questionId
+        Question.findOne({_id}).then((resp) => {
+            if (resp.userId == userId) {
+                let answers = resp.answers
+                const answerId = req.body.answerId
+
+                for (let index = 0; index < answers.length; index++) {
+                    if (answers[index]._id == answerId) {
+                        answers[index].isAccepted = true
+                    }
+                }
+                Question.updateOne({_id}, {answers: answers}).then(() => {
+                    return res.status(200).json({"error":"You successfuly accepted an answer."})
+                })
+                .catch((err) => {
+                    console.log(err)
+                    return res.status(500).json({"error":"Database error, please try it again later."})
+                })
+            }
+            else {
+                return res.status(401).json({"error":"Only the one who asked the question can accept an answer."})
+            }
+            
+        })
+        .catch(() => {
+            return res.status(404).json({"error":"Question doesn't exist."})
+        })
+    }
+    else{
+        return res.status(401).json({"error":"You are unauthorized to delete this question, please log in!"})
+    }
+}
+exports.declineAnswer = (req,res) => {
+    const userId = req.body.userId
+    if (userId) {
+        const _id = req.params.questionId
+        Question.findOne({_id}).then((resp) => {
+            if (resp.userId == userId) {
+                let answers = resp.answers
+                const answerId = req.body.answerId
+
+                for (let index = 0; index < answers.length; index++) {
+                    if (answers[index]._id == answerId) {
+                        answers[index].isAccepted = false
+                    }
+                }
+                Question.updateOne({_id}, {answers: answers}).then(() => {
+                    return res.status(200).json({"error":"You successfuly accepted an answer."})
+                })
+                .catch((err) => {
+                    console.log(err)
+                    return res.status(500).json({"error":"Database error, please try it again later."})
+                })
+            }
+            else {
+                return res.status(401).json({"error":"Only the one who asked the question can accept an answer."})
+            }
+            
+        })
+        .catch(() => {
+            return res.status(404).json({"error":"Question doesn't exist."})
+        })
+    }
+    else{
+        return res.status(401).json({"error":"You are unauthorized to delete this question, please log in!"})
+    }
+}

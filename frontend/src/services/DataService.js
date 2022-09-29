@@ -113,4 +113,59 @@ export default {
             return Promise.reject(err)
         })
     },
+    PostNewAnswer(id, data) {
+        return Axios.post('/postnewanswer/'+id, data)
+        .then((resp) => {
+            console.log(resp)
+            return resp
+        })
+        .catch(err => {
+            console.log(err)
+            return Promise.reject(err)
+        })
+    },
+    EditAnswer(id, data) {
+        return Axios.post('/editanswer/'+id, data)
+        .then((resp) => {
+            console.log(resp)
+            return resp
+        })
+        .catch(err => {
+            console.log(err)
+            return Promise.reject(err)
+        })
+    },
+    DeleteAnswer(id, data) {
+        return Axios.post('/deleteanswer/'+id, data)
+        .then((resp) => {
+            console.log(resp)
+            return resp
+        })
+        .catch(err => {
+            console.log(err)
+            return Promise.reject(err)
+        })
+    },
+    AcceptAnswer(id, data) {
+        return Axios.post('/acceptanswer/'+id, data)
+        .then((resp) => {
+            console.log(resp)
+            return resp
+        })
+        .catch(err => {
+            console.log(err)
+            return Promise.reject(err)
+        })
+    },
+    DeclineAnswer(id, data) {
+        return Axios.post('/declineanswer/'+id, data)
+        .then((resp) => {
+            console.log(resp)
+            return resp
+        })
+        .catch(err => {
+            console.log(err)
+            return Promise.reject(err)
+        })
+    },
 }

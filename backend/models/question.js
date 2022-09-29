@@ -14,6 +14,10 @@ const questionSchema = new Schema({
         type: String,
         required: true,
     },
+    date: {
+        type: Date,
+        default: Date.now
+    },
     voteUps: [
         {
             type: String
@@ -27,7 +31,7 @@ const questionSchema = new Schema({
     answers: [
         {
             answeringUserId: {
-                type: Number
+                type: String
             },
             answerText: {
                 type: String
@@ -35,7 +39,11 @@ const questionSchema = new Schema({
             isAccepted: {
                 type: Boolean,
                 default: false
-            }
+            },
+            answerDate: {
+                type: Date,
+                default: Date.now
+            },
         }
     ]
 

@@ -13,8 +13,8 @@
               Click here to for more detail.
             </div>
             <div>
-              <button class="btn btn-info" @click="vote(question._id, true)">Like</button>
-              <button class="btn btn-info" @click="vote(question._id, false)">Dislike</button>
+              <button class="btn btn-info" @click="vote(question._id, true)" v-if="this.userId">Like</button>
+              <button class="btn btn-info" @click="vote(question._id, false)" v-if="this.userId">Dislike</button>
             </div>
             <button v-if="question.userId == this.userId" class="btn btn-success" @click="edit(question._id)">Edit</button>
           </li>
@@ -61,15 +61,18 @@ export default {
         }
     },
     mounted(){
-        DataService.IsLoggedIn().then((resp) => {
-            this.userId = resp.data
-            if (this.userId) {
-                DataService.GetAllGuestions().then((resp) => {
-                    this.questions = resp.data
-                })
-            }
-        }).catch((err) => {
+        DataService.GetAllGuestions().then((resp) => {
+            this.questions = resp.data
+            
+        }).then(() => {
+            DataService.IsLoggedIn().then((resp) => {
+                this.userId = resp.data
+            })
+        })
+        .catch((err) => {
             console.log(err)
+            this.toastText = err.response.data.error
+            this.toastVisible = true
         })
     }
 }
