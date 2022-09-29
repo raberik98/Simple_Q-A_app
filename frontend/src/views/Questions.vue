@@ -12,9 +12,16 @@
               <div class="fw-bold"><router-link :to='"/question/"+question._id'>{{question.title}}</router-link></div>
               Click here to for more detail.
             </div>
+            <div>
+              <button class="btn btn-info" @click="vote(question._id, true)">Like</button>
+              <button class="btn btn-info" @click="vote(question._id, false)">Dislike</button>
+            </div>
             <button v-if="question.userId == this.userId" class="btn btn-success" @click="edit(question._id)">Edit</button>
           </li>
         </ol>
+        <div v-if="this.toastVisible" class="toastBlock">
+          <h5>{{this.toastText}}</h5>
+        </div>
     </div>
     <div class="col-2"></div>
   </main>
@@ -39,6 +46,18 @@ export default {
     methods: {
         edit(id){
           this.$router.push('/editquestion/'+id)
+        },
+        vote(id, vote){
+          console.log("id: "+id)
+          console.log("vote: "+vote)
+          DataService.Vote(id, {"vote":vote, "userId": this.userId})
+          .then((resp) => {
+                    this.toastText = resp.data.error
+                    this.toastVisible = true
+                }).catch((err) => {
+                    this.toastText = err.response.data.error
+                    this.toastVisible = true
+                })
         }
     },
     mounted(){

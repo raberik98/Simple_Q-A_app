@@ -7,5 +7,6 @@ router.get('/api/getquestionsbyid/:questionId', questionController.getQuestionBy
 router.post('/api/postnewquestion', questionController.postNewQuestion);
 router.post('/api/editquestion/:questionId', questionController.editQuestion);
 router.post('/api/deletequestion/:questionId', questionController.deleteQuestion);
+router.post('/api/vote/:questionId', questionController.voteForQuestion);
 
 module.exports = router;

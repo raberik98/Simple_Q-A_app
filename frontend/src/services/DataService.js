@@ -102,4 +102,15 @@ export default {
             return Promise.reject(err)
         })
     },
+    Vote(id, data) {
+        return Axios.post('/vote/'+id, data)
+        .then((resp) => {
+            console.log(resp)
+            return resp
+        })
+        .catch(err => {
+            console.log(err)
+            return Promise.reject(err)
+        })
+    },
 }

@@ -14,14 +14,16 @@ const questionSchema = new Schema({
         type: String,
         required: true,
     },
-    voteUps: {
-        type: Number,
-        default: 0
-    },
-    voteDowns: {
-        type: Number,
-        default: 0
-    },
+    voteUps: [
+        {
+            type: String
+        }
+    ],
+    voteDowns: [
+        {
+            type: String
+        }
+    ],
     answers: [
         {
             answeringUserId: {
