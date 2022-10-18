@@ -75,7 +75,7 @@ export default {
                     this.$router.push('/questions')
                 })
                 .catch(err => {
-                    console.log(err.response.data.error)
+                    // console.log(err.response.data.error)
                     this.toastVisible = true
                     this.toastText = err.response.data.error
                 })
@@ -83,12 +83,12 @@ export default {
             if (this.doIWantToRegister) {
                 DataService.Register({"email":this.email,"password":this.password})
                 .then((err)=>{
-                    console.log(err.response.data.error)
+                    // console.log(err.response.data.error)
                     this.toastVisible = true
                     this.toastText = err.response.data.error
                 })
                 .catch(err => {
-                    console.log(err.response.data.error)
+                    // console.log(err.response.data.error)
                     this.toastVisible = true
                     this.toastText = err.response.data.error
                 })
